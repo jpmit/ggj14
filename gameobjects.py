@@ -41,18 +41,18 @@ class Block(pygame.sprite.Sprite):
     # dictionary mapping symbols to images
     _IMG = {'X' : 'artwork/4.png', # x block
             'Y' : 'artwork/6.png', # y block
-            'D' : 'artwork/5.png', # door (portal to next level)
+            'D' : 'artwork/portal2.png', # door (portal to next level)
             'S' : 'artwork/3.png', # switch button on level x
             'T' : 'artwork/8.png', # swith button on level y
-            'Q':  'artwork/2.png', # spike 
+            'Q':  'artwork/spikes2.png', # spike 
             #NB: Z and U will be over-ridden, this is just a
             #placeholder
             'Z':  'artwork/2.png',
             'U':  'artwork/2.png'
            }
     # use rgb colors for the changing blocks
-    _COLORS = {'X' : (255, 255, 0),
-               'Y' : (0, 255, 0),
+    _COLORS = {'X' : (223, 220, 166),
+               'Y' : (47, 46, 25),
                'S' : (0, 0, 255),
                'T' : (255, 0, 0)
                }
@@ -136,9 +136,12 @@ class Player(pygame.sprite.Sprite):
     """Class for player and collision."""
     
     # number of pixels per second
-    _JMP_SPEED = 1000
+    _JMP_SPEED = 800
     _FALL_SPEED = 1000
     _WALK_SPEED = 500
+
+    # frame time (in s) for each running frame
+    _F_TIME = 0.02
 
     # in seconds (note this won't give 'pixel perfect' jumping)
     _MAX_JMP_TIME = 0.2
@@ -167,13 +170,38 @@ class Player(pygame.sprite.Sprite):
         self.images = {'idle_right' : pygame.image.load('actions/idle_right.png').convert_alpha(),
                        'idle_left' : pygame.image.load('actions/idle_left.png').convert_alpha(),
                        'jump_right' : pygame.image.load('actions/jump_right.png').convert_alpha(),
-                       'jump_left' : pygame.image.load('actions/jump_left.png').convert_alpha()}
+                       'jump_left' : pygame.image.load('actions/jump_left.png').convert_alpha(),
+        }
+        # running images
+        for i in range(8):
+            rl = 'run_left{0}'.format(i)
+            rr = 'run_right{0}'.format(i)
+            self.images[rl] = pygame.image.load('actions/run_left00{0}.png'.format(i)).convert_alpha()
+            self.images[rr] = pygame.image.load('actions/run_right00{0}.png'.format(i)).convert_alpha()
+        self.frame = 0 # for running frames
+        self.dtframe = 0.0
 
         # start the level facing right               
         self.image = self.images['idle_right']
         self.rect = self.image.get_rect()
         self.rect.topleft = [x, y]
         self.direction = "right"
+
+        # angle is for level completion
+        self.angle = 0
+
+    def rotate(self, angle):
+        self.angle += angle
+
+        rescale = 100.0/self.angle**0.8
+        # rotate
+        self.image = pygame.transform.rotate(self.complete_image, self.angle)
+        # resize
+        isize = self.image.get_size()
+        self.image = pygame.transform.scale(self.image, (int(isize[0]*rescale),
+                                                         int(isize[1]*rescale)))
+        self.rect = self.image.get_rect(center = self.rect.center)
+        #self.angle+=10
 
     def process_input(self, events, pressed, dt):
         # this routine: 
@@ -211,8 +239,15 @@ class Player(pygame.sprite.Sprite):
             self.dx = - self._WALK_SPEED*dt
             if self.contact:
                 # cycle through proper running frames here
-                self.image = self.images['idle_left']
+                self.dtframe += dt
+                if self.dtframe > self._F_TIME:
+                    self.frame += 1
+                    self.dttime = 0
+                if self.frame == 8: self.frame = 0                
+                self.image = self.images['run_left{0}'.format(self.frame)]
+                print self.frame
             else:
+                'jump image'
                 self.image = self.images['jump_left']
 
         # not elif since left and right could be pressed
@@ -222,9 +257,20 @@ class Player(pygame.sprite.Sprite):
             self.dx = self._WALK_SPEED*dt
             if self.contact:
                 # cycle through proper running frames here
-                self.image = self.images['idle_right']
+                self.dtframe += dt
+                if self.dtframe > self._F_TIME:
+                    self.frame += 1
+                    self.dttime = 0
+                if self.frame == 8: self.frame = 0                
+                self.image = self.images['run_right{0}'.format(self.frame)]
             else:
                 self.image = self.images['jump_right']
+
+        if not pressed[RIGHT] and not pressed[LEFT] and self.contact:
+            if self.direction == "right":
+                self.image = self.images['idle_right']
+            else:
+                self.image = self.images['idle_left']
 
     def update(self):
         # move this?

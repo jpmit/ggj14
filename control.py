@@ -7,7 +7,8 @@ UP = 'up'
 DOWN = 'down'
 JUMP = 'jump'
 SWITCH = 'switch'
-ALL_ACTIONS = [LEFT, RIGHT, UP, DOWN, JUMP, SWITCH]
+ESCAPE = 'escape'
+ALL_ACTIONS = [LEFT, RIGHT, UP, DOWN, JUMP, SWITCH, ESCAPE]
 
 class MyEvent(object):
     """Event class from NP."""
@@ -33,6 +34,9 @@ def get_events(pressed):
     for event in  pygame.event.get():
         if (event.type == pygame.KEYDOWN) or (event.type == pygame.KEYUP):
             down = (event.type == pygame.KEYDOWN)
+            if (event.key == pygame.K_ESCAPE):
+                events.append(MyEvent(ESCAPE, down))
+                pressed[ESCAPE] = down
             if (event.key == pygame.K_SPACE):
                 events.append(MyEvent(JUMP, down))
                 pressed[JUMP] = down

@@ -25,11 +25,14 @@ class Game(object):
         for j in joysticks:
             j.init()
 
+        # background image
+        self.bg = pygame.image.load('artwork/background.png')
+
     def mainloop(self):
         
         # first scene of the game
-#        ascene = TitleScene()
-        ascene = PlayScene('1')
+        ascene = TitleScene(self)
+        #ascene = PlayScene('1')
 
         # initialize clock
         dt = self.clock.tick(FPS)
