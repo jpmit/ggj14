@@ -118,6 +118,9 @@ class Game(object):
                 ascene = None
                 pygame.quit()
 
-if __name__ == "__main__":
+def main():
     gm = Game()
     gm.mainloop()
+
+if __name__ == "__main__":
+    main()
