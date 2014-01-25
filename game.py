@@ -6,6 +6,10 @@ from control import get_events, ALL_ACTIONS
 from scene import PlayScene, TitleScene
 from const import *
 
+class JukeBox(object):
+    def __init__(self):
+        pass
+
 class Game(object):
     def __init__(self):
         """Setup pygame, display, etc."""
@@ -28,11 +32,14 @@ class Game(object):
         # background image
         self.bg = pygame.image.load('artwork/background.png')
 
+        # jukebox will store sfx and music
+        self.jukebox = JukeBox()
+
     def mainloop(self):
         
         # first scene of the game
-        ascene = TitleScene(self)
-        #ascene = PlayScene('1')
+#        ascene = TitleScene(self)
+        ascene = PlayScene('1', self)
 
         # initialize clock
         dt = self.clock.tick(FPS)

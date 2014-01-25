@@ -3,6 +3,8 @@ from control import LEFT, RIGHT, UP, DOWN, JUMP, SWITCH
 from const import *
 from gameobjects import Level, Camera, RelRect
 from time import sleep
+import random
+import copy
 
 class Scene(object):
     """Abstract base class."""
@@ -46,8 +48,44 @@ class DeadScene(Scene):
         self.game = game
         self.pscene = pscene
 
+        self.player = self.pscene.player
+
         # store time elapsed in this scene
         self.telapsed = 0.0
+
+        # set player image to none, so scene won't draw it
+        self.player.image = None
+
+        # initial rendering position
+        self.initrect = RelRect(self.player, 
+                                self.pscene.camera)
+        if self.player.direction == 'right':
+            self.pimage = self.pscene.player.images['idle_right']
+        else:
+            self.pimage = self.pscene.player.images['idle_left']
+
+        self.pimages = []
+        self.vels = []
+        self.xoffset = []
+        self.yoffset = []
+        self.rects = []
+
+        # one rect per pixel:
+        # NB: this loop could be perilously slow (sorry!)
+        img_size = 2
+        for x in range(32/img_size):
+            for y in range(58/img_size):
+                image = pygame.Surface((img_size, img_size),
+                                       pygame.SRCALPHA).convert_alpha()
+                image.blit(self.pimage, (0, 0), (x, y, img_size, img_size))
+                self.pimages.append(image)
+                self.vels.append((random.random() - 0.5, random.random() - 0.5))
+                self.xoffset.append(x * img_size)
+                self.yoffset.append(y * img_size)
+                rec = copy.deepcopy(self.initrect)
+                rec.centerx += x*img_size
+                rec.centery += y*img_size
+                self.rects.append(rec)
 
     def update(self, dt):
         self.telapsed += dt
@@ -55,6 +93,17 @@ class DeadScene(Scene):
         if self.telapsed > self._STIME:
             # go back to start of level
             self.next = PlayScene(self.pscene.level.name, self.game)
+
+    def render(self, screen):
+        self.pscene.render(screen)
+
+        # render all of the exploding player images
+        for pimage, vel, rec in zip(self.pimages, self.vels, self.rects):
+            # this should really be in update function
+            #brec = self.initrect
+            rec.centerx += self.telapsed*100*vel[0]
+            rec.centery += self.telapsed*100*vel[1]
+            screen.blit(pimage, rec)#self.initrect)
 
 class LevelCompleteScene(Scene):
     # time to spend in this scene
@@ -159,7 +208,8 @@ class PlayScene(Scene):
                 screen.blit(s.image, RelRect(s, self.camera))
 
         # player
-        screen.blit(self.player.image, RelRect(self.player, self.camera))
+        if self.player.image:
+            screen.blit(self.player.image, RelRect(self.player, self.camera))
 
         # name of the level
         screen.blit(self.nametxt, (400, 50))
