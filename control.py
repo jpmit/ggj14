@@ -40,7 +40,7 @@ def get_events(pressed):
             if (event.key == pygame.K_SPACE):
                 events.append(MyEvent(JUMP, down))
                 pressed[JUMP] = down
-            if (event.key == pygame.K_RETURN):
+            if (event.key == pygame.K_x):
                 events.append(MyEvent(SWITCH, down))
                 pressed[SWITCH] = down
             elif event.key == pygame.K_LEFT:

@@ -215,6 +215,7 @@ class Player(pygame.sprite.Sprite):
 
         if pressed[JUMP]:
             if not self.isjumping and not self.isfalling:
+                self.level.game.jukebox.play_sfx('jump')
                 self.isjumping = True
                 self.dtjump = 0.0
 
@@ -245,7 +246,6 @@ class Player(pygame.sprite.Sprite):
                     self.dttime = 0
                 if self.frame == 8: self.frame = 0                
                 self.image = self.images['run_left{0}'.format(self.frame)]
-                print self.frame
             else:
                 'jump image'
                 self.image = self.images['jump_left']
@@ -333,10 +333,12 @@ class Level(object):
     
     ALL_SYMBOLS = ["X", "Y", "Z", "D", "S", "T", "U", "Q"]
 
-    def __init__(self, name):
+    def __init__(self, name, game):
         
         # name e.g. '1', '2'
         self.name = name
+
+        self.game = game
 
         self.level1 = []
         
@@ -354,7 +356,7 @@ class Level(object):
         dfile = 'level/' + name
         self.create_level(dfile, 0, 0)
 
-        print self.current_sprites, self.other_sprites, self.permanent_sprites
+#        print self.current_sprites, self.other_sprites, self.permanent_sprites
 
     def switch(self):
         if self.current_sprites == self.x_sprites:
@@ -383,7 +385,7 @@ class Level(object):
                     elif col in ["Z", "U"]:
                         # Z is X and Y 
                         if col == "Z":
-                            print "Z block!!"
+#                            print "Z block!!"
                             block = Block("X", x, y)
                             self.x_sprites.add(block)
                             block = Block("Y", x, y)
@@ -395,7 +397,6 @@ class Level(object):
                            
                     # permanent blocks (present in both levels)
                     elif col in ["D", "Q"]:
-                        print 'permanent'
                         self.permanent_sprites.add(block)
                         # only one door per level please!
                         if col == "D":
