@@ -109,7 +109,8 @@ class Game(object):
     def mainloop(self):
         
         # first scene of the game
-        ascene = TitleScene(self)
+        #ascene = TitleScene(self)
+        ascene = PlayScene('8', self)
 
         # initialize clock
         dt = self.clock.tick(FPS) / 1000.0
