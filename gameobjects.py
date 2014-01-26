@@ -38,17 +38,19 @@ class Camera(object):
 class Block(pygame.sprite.Sprite):
     """The square blocks that comprise the level"""
     
-    # dictionary mapping symbols to images
-    _IMG = {'X' : 'artwork/4.png', # x block
-            'Y' : 'artwork/6.png', # y block
+    # dictionary mapping symbols to images these are all (except for
+    # 'D' and 'Q') placeholders (not used) now, hence using 'pink.png'
+    # for all !
+    _IMG = {'X' : 'artwork/pink.png', # x block
+            'Y' : 'artwork/pink.png', # y block
             'D' : 'artwork/portal2.png', # door (portal to next level)
-            'S' : 'artwork/3.png', # switch button on level x
-            'T' : 'artwork/8.png', # swith button on level y
+            'S' : 'artwork/pink.png', # switch button on level x
+            'T' : 'artwork/pink.png', # swith button on level y
             'Q':  'artwork/spikes2.png', # spike 
             #NB: Z and U will be over-ridden, this is just a
             #placeholder
-            'Z':  'artwork/2.png',
-            'U':  'artwork/2.png'
+            'Z':  'artwork/pink.png',
+            'U':  'artwork/pink.png'
            }
     # use rgb colors for the changing blocks
     _COLORS = {'X' : (223, 220, 166),
