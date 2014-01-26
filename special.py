@@ -81,7 +81,6 @@ class Level1Tutorial(Scene):
             if self.tpassed > d[1]:
                 cur_disc.append(d)
         
-        print cur_disc
         # have the active discussions changed ?
         if cur_disc != self.active_disc:
             self.active_disc = cur_disc

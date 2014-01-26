@@ -135,9 +135,10 @@ class PlayScene(Scene):
         self.level = Level(name, self.game)
 
         self.player = self.level.player
-        lsize = self.level.get_size()
+        self.lsize = self.level.get_size()
+
 #        print "level size:", lsize
-        self.camera = Camera(self.player.rect, lsize[0], lsize[1])
+        self.camera = Camera(self.player.rect, self.lsize[0], self.lsize[1])
 
         # my name is the name displayed at the top of the screen
         self.myname = name + ':' + SCENE_NAMES[name]
@@ -168,6 +169,13 @@ class PlayScene(Scene):
     def update(self, dt):
 
         self.player.update()
+        
+        # check for player going off the level
+        ybot = self.player.rect.y + self.player.rect.w
+        xleft = self.player.rect.x
+        if ((xleft < 0) or (xleft > self.lsize[0]) 
+            or (ybot < 0) or (ybot > self.lsize[1])):
+            self.player.isdead = True
         
         if self.player.isdead:
             self.game.jukebox.play_sfx('dead')
