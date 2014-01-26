@@ -39,7 +39,7 @@ HOW TO PLAY THE GAME:
 --------------------
 
 [There is an in game tutorial so in the first instance there is no
-need to read this section]
+need to read this section.]
 
 Use the left and right arrow keys to move the character.  Press
 spacebar to jump.  Press the 'x' key to 'switch' the level.
