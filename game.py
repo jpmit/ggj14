@@ -101,8 +101,8 @@ class Game(object):
         # first scene of the game
 #        ascene = GameCompleteScene(self)
 
-#        ascene = PlayScene('13', self)
-        ascene = TitleScene(self)
+        ascene = PlayScene('13', self)
+#        ascene = TitleScene(self)
 
         # initialize clock
         dt = self.clock.tick(FPS) / 1000.0

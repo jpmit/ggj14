@@ -10,10 +10,12 @@ stuff should be derived from scene.
     if not TUTORIAL_ON:
         return []
 
-    # empty list is default
-    specobjs = _SPECIAL.get(level.name, [])
-
-    return [s(level, game) for s in specobjs]
+    slist = []
+    if level.name in DISCUSSIONS:
+        return [LevelTutorial(level, game)]
+    else:
+        # no special stuff
+        return []
 
 # text, appearance time (in secs), disappearance time (in secs)
 DISCUSSIONS = {'1': [(["Hi Kid!"], 3.5, 5.5),
@@ -91,7 +93,6 @@ class LevelTutorial(Scene):
         return tlines
 
     def get_current_discussions(self):
-        
         cur_disc = []
         for d in self.discussions:
             if self.tpassed > d[1] and self.tpassed < d[2]:
@@ -100,6 +101,7 @@ class LevelTutorial(Scene):
         return cur_disc
 
     def update(self, dt):
+        print self.active_disc
         self.tpassed += dt
 
         # increment global time spent in dialog
@@ -117,10 +119,3 @@ class LevelTutorial(Scene):
         for (i, tline) in enumerate(self.get_text()):
             txt = self.txtfont.render(tline, True, WHITE)
             screen.blit(txt, (TEXT_POS[0], TEXT_POS[1] + 30*i))
-    
-# dictionary of special stuff, with level names as keys
-_SPECIAL = {'1' : [LevelTutorial],
-            '2' : [LevelTutorial],
-            '3': [LevelTutorial],
-            '4': [LevelTutorial]
-}
