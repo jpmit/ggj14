@@ -15,10 +15,7 @@ class GameCompleteScene(Scene):
         self.next = self
 
         self.game = game
-        # play completion scene music
-#        self.game.jukebox.play_music_if('gamecomplete')        
-        
-#        pass
+
         self.font = pygame.font.Font('fonts/ShareTechMono-Regular.ttf', 100)
         self.sfont = pygame.font.Font('fonts/ShareTechMono-Regular.ttf', 30)
         self.comptxt = self.font.render("Game Complete", True,
@@ -34,15 +31,28 @@ class GameCompleteScene(Scene):
         self.game.jukebox.stop_music()
         self.game.jukebox.play_sfx('victory')
 
+        # get totally num deaths this play through
+        self.ndeath = self.game.get_ndeath()
+        self.deathtxt = self.sfont.render("You died {0} times".format(self.ndeath), True,
+                                          WHITE)
+        if self.ndeath > 0: # it will be!
+            self.deathtxt2 = self.sfont.render("Try for better next time", True, WHITE)
+        else:
+            self.deathtxt2 = self.sfont.render("Perfect!", True, WHITE)
+
     def render(self, screen):
         screen.blit(self.game.bg, (0, 0))
         screen.blit(self.comptxt, (180, 40))
         screen.blit(self.wstxt, (180, 180))
+
+        screen.blit(self.deathtxt, (180, 220))
+
+        screen.blit(self.deathtxt2, (180, 260))
+
         screen.blit(self.player.image, self.player.rect)
 
     def process_input(self, events, pressed, dt):
-        # hacky (sorry) assume the player aint pressing any keys (he
-        # can move the player if he is!)
+        # hacky (sorry)
         pressed = {}
         for action in ALL_ACTIONS:
             pressed[action] = False
@@ -104,6 +114,9 @@ class DeadScene(Scene):
                 rec.centerx += x*img_size
                 rec.centery += y*img_size
                 self.rects.append(rec)
+
+        # add to number deaths
+        self.game.add_death()
 
     def update(self, dt):
         self.telapsed += dt
@@ -287,7 +300,10 @@ class TitleScene(Scene):
         self.blinkon = True
 
         # play menu scene music
-        self.game.jukebox.play_music_if('menu')        
+        self.game.jukebox.play_music_if('menu')  
+
+        # IMPORTANT: set number deaths to 0
+        self.game.reset_ndeath()
 
     def process_input(self, events, pressed, dt):
         if pressed[JUMP]:

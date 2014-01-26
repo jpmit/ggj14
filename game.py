@@ -1,5 +1,3 @@
-"""Example of main loop and using Scenes to manage the game flow."""
-
 import pygame
 import sys
 from control import get_events, ALL_ACTIONS
@@ -84,9 +82,6 @@ class Game(object):
 
         # total number of play levels
         self.nlevels = len(level.LEVEL_NAMES.keys())
-
-        # TODO store number of times died per level
-        self.ndead = {}
         
         # title bars
         pygame.display.set_caption('Two Levels')
@@ -95,6 +90,18 @@ class Game(object):
         self.dialog_dts = {}
         for lev in level.LEVEL_NUMS:
             self.dialog_dts[lev] = 0.0
+
+        # total num times died this play through (all levels)
+        self.ndead = 0
+
+    def add_death(self):
+        self.ndead += 1
+
+    def reset_ndeath(self):
+        self.ndead = 0
+
+    def get_ndeath(self):
+        return self.ndead
 
     def increment_deleted_dialogs(self, lev, nadd):
         self.del_dialogs[lev] += nadd
