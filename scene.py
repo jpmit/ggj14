@@ -187,7 +187,7 @@ class PlayScene(Scene):
 
         # get special stuff, e.g. tutorial (this should be a list, and
         # empty if there is no special stuff).
-        self.special_stuff = special.get_special_stuff(self)
+        self.special_stuff = special.get_special_stuff(self, self.game)
 
     def process_input(self, events, pressed, dt):
         # move the player 

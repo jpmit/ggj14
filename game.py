@@ -88,6 +88,13 @@ class Game(object):
         # store number of times died per level
         self.ndead = {}
 
+        self.del_dialogs = {}
+        for lev in level.LEVEL_NUMS:
+            self.del_dialogs[lev] = 0
+
+    def increment_deleted_dialogs(self, lev, nadd):
+        self.del_dialogs[lev] += nadd
+
     def mainloop(self):
         
         # first scene of the game

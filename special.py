@@ -2,7 +2,7 @@ import pygame
 from const import *
 from basescene import Scene
 
-def get_special_stuff(level):
+def get_special_stuff(level, game):
     """Return list of special stuff for the level with this name.  Special
 stuff should be derived from scene.
     """
@@ -13,7 +13,7 @@ stuff should be derived from scene.
     # empty list is default
     specobjs = _SPECIAL.get(level.name, [])
 
-    return [s(level) for s in specobjs]
+    return [s(level, game) for s in specobjs]
 
 # text, appearance time (in secs), disappearance time (in secs)
 DISCUSSIONS = {'1': [(["Hi Kid!"], 3.5, 4.5),
@@ -50,7 +50,11 @@ DISCUSSIONS = {'1': [(["Hi Kid!"], 3.5, 4.5),
                '3': [(["There could be something",
                        "interesting here"], 1, 3),
                      (["Try shifting while",
-                        "in a hollow box"], 6, 9)],
+                        "in a hollow box"], 6, 12),
+                     (["Try shifting while",
+                        "in a hollow box"], 20, 25),
+                     (["Try shifting while",
+                        "in a hollow box"], 60, 80)],
                '4': [(["It's going to get harder",
                        "from here kid"], 1, 3),
                      (["They tell me there are",
@@ -60,8 +64,9 @@ DISCUSSIONS = {'1': [(["Hi Kid!"], 3.5, 4.5),
 }
 
 class LevelTutorial(Scene):
-    def __init__(self, level):
+    def __init__(self, level, game):
         self.level = level
+        self.game = game
         self.jukebox = self.level.game.jukebox
         self.txtfont = pygame.font.Font('fonts/ShareTechMono-Regular.ttf' , 22)
 
@@ -72,8 +77,23 @@ class LevelTutorial(Scene):
         self.tpassed = 0.0
 
         self.discussions = DISCUSSIONS.get(self.level.name, [])
-        # last discussion deleted (finished)
-        self.deleted = None
+
+        # remove any discussions (dialogs) that have been seen in the
+        # game already for this level
+        if self.discussions:
+            self.discussions = [list(s) for s in self.discussions]
+            ndel = self.game.del_dialogs[level.name]
+            # subtract the end time of the last seen dialog from all
+            # of the dialogs.
+            if ndel > 0:
+                etime = self.discussions[ndel - 1][2]
+                for d in self.discussions:
+                    d[1] -= etime
+                    d[2] -= etime
+
+                # we only want the dialogs that haven't yet been deleted.
+                self.discussions = self.discussions[ndel:]
+        print self.discussions
 
     def get_text(self):
         tlines = []
@@ -88,11 +108,21 @@ class LevelTutorial(Scene):
         # get rid of any old text (a bit inefficient, like a lot of
         # the code in this game! - sorry)
         new_discussions = []
+        deleted = 0
         for d in self.discussions:
             if self.tpassed < d[2]:
                 new_discussions.append(d)
             else:
-                self.deleted = d
+                deleted += 1
+
+        # we store the number of deleted discussions in the game, so
+        # that we can resume at the right place when/if the player
+        # character dies on the level.
+        if deleted:
+            self.game.increment_deleted_dialogs(self.level.name, 
+                                                deleted)
+
+
         self.discussions = new_discussions
 
         cur_disc = []
