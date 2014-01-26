@@ -31,8 +31,8 @@ game: we never quite see things how they are--since there are always
 two 'levels'---we see them as 'we are' (only one level, the one we are
 currently on).
 
-I've also tried to incorporate the following 'diversifiers':
-- 'You Only Live Thrice'
+I've also incorporated the following 'diversifier' (mainly by
+accident to be honest): 
 - 'I am who I want to be'
 
 HOW TO PLAY THE GAME:
@@ -52,8 +52,8 @@ CONTROLLER:
 ----------
 
 The game can be played with a USB gamepad, but unfortunately due to
-time constraints I had to 'hard code' this in, hence the in-game
-tutorial features keyboard controls only.
+time constraints I had to 'hard code' this in, hence keyboard controls
+are more reliable.
 
 The controller I used is an inexpensive SNES like controller made by
 'totalconsole' (purchased from Amazon).  So if you use one like this,
@@ -67,7 +67,7 @@ LICENSE:
 
 In accordance with the GGJ rules, 'Two Levels' (code and art) is
 provided here under the Attribution-Noncommercial-Share Alike 3.0
-version of the Creative Commons Licensez (except for parts listed in
+version of the Creative Commons License (except for parts listed in
 "ARTISTIC CREDITS").  See the GGJ website globalgamejam.org for more
 information.
 
@@ -75,9 +75,9 @@ ARTISTIC CREDITS:
 ----------------
 
 I'd like to thank the community of people who make 'assets' (images
-and music) for the game-dev community.  Without you folks, it wouldn't
-be possible for people like me to make anything.  Specific credits for
-the assets used in this game are listed below.
+and music) that can be used by artistically challenged people like
+myself.  Specific credits for the assets used in this game are listed
+below.
 
 **Images**: 
 
