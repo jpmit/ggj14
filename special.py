@@ -7,40 +7,59 @@ def get_special_stuff(level):
 stuff should be derived from scene.
     """
     
+    if not TUTORIAL_ON:
+        return []
+
     # empty list is default
     specobjs = _SPECIAL.get(level.name, [])
 
     return [s(level) for s in specobjs]
 
 # text, appearance time (in secs), disappearance time (in secs)
-DISCUSSIONS = {'1': [(["Hi Kid!"], 1.5, 2.5),
+DISCUSSIONS = {'1': [(["Hi Kid!"], 3.5, 4.5),
                      (["Things aren't quite as simple",
-                       "as they seem to be around here"], 3.5, 5),
-                     (["But don't worry"], 6, 9),
-                     (["I'll help you out"], 7.5, 9),
+                       "as they seem to be around here"], 5.5, 7.5),
+                     (["But don't worry"], 8, 11.5),
+                     (["I'll help you out"], 9.5, 11.5),
                      (["Use the left and right arrow",
-                        "keys to run around"], 12, 15),
-                     (["Or your Gamepad"], 15, 18),
-                     (["If it works!"], 16.5, 18),
+                        "keys to run around"], 14, 17),
+                     (["Or your Gamepad"], 17, 20),
+                     (["If it works!"], 18.5, 20),
                      (["You need to get to",
-                       "the portal, kid"], 21, 24),
+                       "the portal, kid"], 23, 26),
                      (["That's the glowing",
                        "orange fireball"],
-                      25, 26),
+                      27, 28.5),
                      (["You'll need to use a technique",
                        "I call 'switching'"],
-                      28, 31),
+                      30, 33),
                      (["Press the 'X' key",
                        "on your keyboard",
-                       "(or your gamepad)"], 34, 37),
+                       "(or your gamepad)"], 36, 39),
                      (["Watch out for spikes",
-                       "though kid"], 40, 42),
+                       "though kid"], 42, 44),
                      (["This is a video game",
-                       "after all"], 43, 46)
-                     
-]}
+                       "after all"], 45, 47)
+                    ],
+               '2': [(["Did I mention you can jump?"], 1, 3),
+                     (["Press SPACEBAR to jump",
+                        "(or your gamepad)"], 6, 8),
+                     (["Just don't jump",
+                        "off the screen"], 10, 12),
+                     ],
+               '3': [(["There could be something",
+                       "interesting here"], 1, 3),
+                     (["Try shifting while",
+                        "in a hollow box"], 6, 9)],
+               '4': [(["It's going to get harder",
+                       "from here kid"], 1, 3),
+                     (["They tell me there are",
+                      "12 levels in total"], 5, 7),
+                     (["But then"], 8, 11.5),
+                     (["Who am I to know?"], 10, 11.5)]
+}
 
-class Level1Tutorial(Scene):
+class LevelTutorial(Scene):
     def __init__(self, level):
         self.level = level
         self.jukebox = self.level.game.jukebox
@@ -93,4 +112,8 @@ class Level1Tutorial(Scene):
             screen.blit(txt, (TEXT_POS[0], TEXT_POS[1] + 30*i))
     
 # dictionary of special stuff, with level names as keys
-_SPECIAL = {'1' : [Level1Tutorial]}
+_SPECIAL = {'1' : [LevelTutorial],
+            '2' : [LevelTutorial],
+            '3': [LevelTutorial],
+            '4': [LevelTutorial]
+}

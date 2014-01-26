@@ -15,3 +15,6 @@ TEXT_POS = (580, 150)
 
 # where to blit the level name
 NAME_POS = (400, 30)
+
+# text tutorial
+TUTORIAL_ON = True

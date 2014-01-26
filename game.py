@@ -3,7 +3,8 @@
 import pygame
 import sys
 from control import get_events, ALL_ACTIONS
-from scene import PlayScene, TitleScene
+from scene import PlayScene, TitleScene, GameCompleteScene
+import level
 from const import *
 
 class JukeBox(object):
@@ -26,7 +27,8 @@ class JukeBox(object):
                     'complete' : pygame.mixer.Sound('sounds/beam2.ogg'),
                     'jump': pygame.mixer.Sound('sounds/jump_07.ogg'),
                     'switch': pygame.mixer.Sound('sounds/click.ogg'),
-                    'talk' : pygame.mixer.Sound('sounds/turret2.ogg')
+                    'talk' : pygame.mixer.Sound('sounds/turret2.ogg'),
+                    'victory' : pygame.mixer.Sound('sounds/fanfare.ogg')
         }
 
         self.music = {'menu' : 'sounds/menu.ogg',
@@ -46,6 +48,10 @@ class JukeBox(object):
         if self.soundon:
             if self.playing != name:
                 self.play_music(name)
+    
+    def stop_music(self):
+        if self.soundon:
+            pygame.mixer.music.stop()
     
     def play_sfx(self, name):
         if self.soundon:
@@ -76,11 +82,18 @@ class Game(object):
         # jukebox will store sfx and music
         self.jukebox = JukeBox()
 
+        # total number of play levels
+        self.nlevels = len(level.LEVEL_NAMES.keys())
+
+        # store number of times died per level
+        self.ndead = {}
+
     def mainloop(self):
         
         # first scene of the game
-#        ascene = TitleScene(self)
-        ascene = PlayScene('1', self)
+#        ascene = GameCompleteScene(self)
+        ascene = TitleScene(self)
+#        ascene = PlayScene('3', self)
 
         # initialize clock
         dt = self.clock.tick(FPS) / 1000.0

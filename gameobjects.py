@@ -356,8 +356,6 @@ class Level(object):
         dfile = 'level/' + name
         self.create_level(dfile, 0, 0)
 
-#        print self.current_sprites, self.other_sprites, self.permanent_sprites
-
     def switch(self):
         if self.current_sprites == self.x_sprites:
             self.current_sprites = self.y_sprites

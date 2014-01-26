@@ -98,5 +98,7 @@ the assets used in this game are listed below.
   (http://opengameart.org/content/atari-booms).  It is listed under
   the CC-BY 3.0 license, and was created by 'dklon'.
 
+- 'fanfare.ogg' is licensed CC-BY. Thanks to 'Avgvst' for this.
+
 Thanks again to everyone who made this stuff and lets others use it
 with no/limited restrictions!

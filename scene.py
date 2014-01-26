@@ -1,25 +1,60 @@
 import pygame
 from basescene import Scene
-from control import LEFT, RIGHT, UP, DOWN, JUMP, SWITCH
+from control import LEFT, RIGHT, UP, DOWN, JUMP, SWITCH, ALL_ACTIONS
 from const import *
-from gameobjects import Level, Camera, RelRect
+from gameobjects import Level, Camera, RelRect, Player
 from time import sleep
 import special # includes tutorial stuff
 import random
 import copy
+from level import LEVEL_NAMES
 
-# mapping of playscene name to background
-# NB: this is not used at the moment
-SCENE_BG = {'1' : 'artwork/7.png',
-            '2' : 'artwork/7.png',
-            '3' : 'artwork/7.png',
-            '4' : 'artwork/7.png',
-            '5' : 'artwork/7.png',
-            '6' : 'artwork/7.png'}
-SCENE_NAMES = {'1': 'nowhere to go',
-               '2': 'jump',
-               '3': 'be careful please'
-               }
+class GameCompleteScene(Scene):
+    _STIME = 8.5
+    def __init__(self, game):
+        self.next = self
+
+        self.game = game
+        # play completion scene music
+#        self.game.jukebox.play_music_if('gamecomplete')        
+        
+#        pass
+        self.font = pygame.font.Font('fonts/ShareTechMono-Regular.ttf', 100)
+        self.sfont = pygame.font.Font('fonts/ShareTechMono-Regular.ttf', 30)
+        self.comptxt = self.font.render("Game Complete", True,
+                                          WHITE)
+        self.wstxt = self.sfont.render("good job, thanks for playing!", True,
+                                      WHITE)
+
+        self.player = Player(None, 30, 400)
+
+        self.telapsed = 0.0
+
+        # stop main music and play victory sound effect
+        self.game.jukebox.stop_music()
+        self.game.jukebox.play_sfx('victory')
+
+    def render(self, screen):
+        screen.blit(self.game.bg, (0, 0))
+        screen.blit(self.comptxt, (180, 40))
+        screen.blit(self.wstxt, (180, 180))
+        screen.blit(self.player.image, self.player.rect)
+
+    def process_input(self, events, pressed, dt):
+        # hacky (sorry) assume the player aint pressing any keys (he
+        # can move the player if he is!)
+        pressed = {}
+        for action in ALL_ACTIONS:
+            pressed[action] = False
+        pressed[RIGHT] = True
+        self.player.contact = True
+        self.player.process_input(None, pressed, dt)
+        self.player.rect.x += dt*240
+
+    def update(self, dt):
+        self.telapsed += dt
+        if self.telapsed > self._STIME:
+            self.next = TitleScene(self.game)
 
 class DeadScene(Scene):
     # time to spend in this scene
@@ -113,7 +148,10 @@ class LevelCompleteScene(Scene):
         self.pscene.player.rotate(dt*self._ROT_DEG*self.telapsed)
 
         if self.telapsed > self._STIME:
-            self.next = PlayScene(self.nname, self.game)
+            if int(self.nname) > self.game.nlevels:
+                self.next = GameCompleteScene(self.game)
+            else:
+                self.next = PlayScene(self.nname, self.game)
 
     def render(self, screen):
         # this will ensure the rotating player is rendered
@@ -128,8 +166,6 @@ class PlayScene(Scene):
         
         self.game = game
         # get background info for this scene (not currently used)
-        self.bg = pygame.image.load(SCENE_BG[name])
-        self.bg_rect = self.bg.get_rect()
 
         # get level data for this scene
         self.level = Level(name, self.game)
@@ -141,7 +177,7 @@ class PlayScene(Scene):
         self.camera = Camera(self.player.rect, self.lsize[0], self.lsize[1])
 
         # my name is the name displayed at the top of the screen
-        self.myname = name + ':' + SCENE_NAMES[name]
+        self.myname = name + ':' + LEVEL_NAMES[name]
         self.namefont = pygame.font.Font('fonts/ShareTechMono-Regular.ttf' , 20)
         self.nametxt = self.namefont.render(self.myname, True, 
                                             WHITE)
@@ -171,7 +207,7 @@ class PlayScene(Scene):
         self.player.update()
         
         # check for player going off the level
-        ybot = self.player.rect.y + self.player.rect.w
+        ybot = self.player.rect.y + self.player.rect.h
         xleft = self.player.rect.x
         if ((xleft < 0) or (xleft > self.lsize[0]) 
             or (ybot < 0) or (ybot > self.lsize[1])):
