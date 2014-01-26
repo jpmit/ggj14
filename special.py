@@ -66,7 +66,18 @@ DISCUSSIONS = {'1': [(["Hi Kid!"], 3.5, 5.5),
                      (["They tell me there are",
                       "12 levels in total"], 5, 7),
                      (["But then"], 8, 11.5),
-                     (["Who am I to know?"], 10, 11.5)]
+                     (["Who am I to know?"], 10, 11.5),
+                     (["Quite Frankly, it's the",
+                       "Global Gam Jam at the moment"], 13, 15),
+                     (["And I'm at least half asleep"],
+                       16, 20),
+                     (["Probably more like 90% actually"], 
+                       18, 20)],
+               '6': [(["Good luck kid"], 1, 3.5),
+                     (["You're on your own now"], 1.5, 3.5),
+                     (["I'm off to sleep"], 5, 6.5),
+                     (["I never did figure out"], 8, 11),
+                     (["Why I called you kid"], 9.5, 11)]
 }
 
 class LevelTutorial(Scene):

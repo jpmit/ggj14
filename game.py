@@ -85,8 +85,11 @@ class Game(object):
         # total number of play levels
         self.nlevels = len(level.LEVEL_NAMES.keys())
 
-        # store number of times died per level
+        # TODO store number of times died per level
         self.ndead = {}
+        
+        # title bars
+        pygame.display.set_caption('Two Levels')
 
         # time in secs through the dialog for each level
         self.dialog_dts = {}

@@ -280,6 +280,8 @@ class TitleScene(Scene):
 
         self.txt = self.mfont.render("Press Space to start!",
                                       True, WHITE)
+        self.txt2 = self.mfont.render("(joypad 'A' button)",
+                                      True, WHITE)
 
         self.dt = 0
         self.blinkon = True
@@ -309,3 +311,4 @@ class TitleScene(Scene):
 
         if self.blinkon:
             screen.blit(self.txt, (310, 400))
+            screen.blit(self.txt2, (310, 440))
