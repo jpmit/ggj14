@@ -88,9 +88,10 @@ class Game(object):
         # store number of times died per level
         self.ndead = {}
 
-        self.del_dialogs = {}
+        # time in secs through the dialog for each level
+        self.dialog_dts = {}
         for lev in level.LEVEL_NUMS:
-            self.del_dialogs[lev] = 0
+            self.dialog_dts[lev] = 0.0
 
     def increment_deleted_dialogs(self, lev, nadd):
         self.del_dialogs[lev] += nadd
@@ -99,8 +100,9 @@ class Game(object):
         
         # first scene of the game
 #        ascene = GameCompleteScene(self)
+
+#        ascene = PlayScene('13', self)
         ascene = TitleScene(self)
-#        ascene = PlayScene('3', self)
 
         # initialize clock
         dt = self.clock.tick(FPS) / 1000.0

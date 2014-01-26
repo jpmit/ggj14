@@ -18,7 +18,7 @@ stuff should be derived from scene.
 # text, appearance time (in secs), disappearance time (in secs)
 DISCUSSIONS = {'1': [(["Hi Kid!"], 3.5, 5.5),
                      (["Things aren't quite as simple",
-                       "as they seem to be around here"], 7.5, 10.5),
+                       "as they seem around here"], 7.5, 10.5),
                      (["But don't worry"], 12, 15.5),
                      (["I'll help you out"], 13.5, 15.5),
                      (["Use the left and right arrow",
@@ -52,14 +52,14 @@ DISCUSSIONS = {'1': [(["Hi Kid!"], 3.5, 5.5),
                '3': [(["There could be something",
                        "interesting here"], 1, 3),
                      (["Try shifting while",
-                        "in a hollow box"], 6, 12),
+                        "in a hollow box"], 10, 14),
                      (["Two shifts",
-                        "in close succession..."], 20, 25),
+                        "in close succession..."], 20, 28),
                      (["You can do it kid"], 50, 55),
                      (["Jump towards the", "top of the tower"],
                       57, 67),
                      (["And rapidly switch twice"], 62, 67)],
-               '4': [(["It's going to get harder",
+               '5': [(["It's going to get harder",
                        "from here kid"], 1, 3),
                      (["They tell me there are",
                       "12 levels in total"], 5, 7),
@@ -74,29 +74,14 @@ class LevelTutorial(Scene):
         self.jukebox = self.level.game.jukebox
         self.txtfont = pygame.font.Font('fonts/ShareTechMono-Regular.ttf' , 22)
 
-        # List of discussions active at the present time
-        self.active_disc = []
-
-        # stored time passed
-        self.tpassed = 0.0
 
         self.discussions = DISCUSSIONS.get(self.level.name, [])
 
-        # remove any discussions (dialogs) that have been seen in the
-        # game already for this level
-        if self.discussions:
-            self.discussions = [list(s) for s in self.discussions]
-            ndel = self.game.del_dialogs[level.name]
-            # subtract the end time of the last seen dialog from all
-            # of the dialogs.
-            if ndel > 0:
-                etime = self.discussions[ndel - 1][2]
-                for d in self.discussions:
-                    d[1] -= etime
-                    d[2] -= etime
+        # get time passed in dialog
+        self.tpassed = self.game.dialog_dts[level.name]
 
-                # we only want the dialogs that haven't yet been deleted.
-                self.discussions = self.discussions[ndel:]
+        # List of discussions active at the present time
+        self.active_disc = self.get_current_discussions()
 
     def get_text(self):
         tlines = []
@@ -105,33 +90,22 @@ class LevelTutorial(Scene):
                 tlines.append(line)
         return tlines
 
+    def get_current_discussions(self):
+        
+        cur_disc = []
+        for d in self.discussions:
+            if self.tpassed > d[1] and self.tpassed < d[2]:
+                cur_disc.append(d)
+
+        return cur_disc
+
     def update(self, dt):
         self.tpassed += dt
-        
-        # get rid of any old text (a bit inefficient, like a lot of
-        # the code in this game! - sorry)
-        new_discussions = []
-        deleted = 0
-        for d in self.discussions:
-            if self.tpassed < d[2]:
-                new_discussions.append(d)
-            else:
-                deleted += 1
 
-        # we store the number of deleted discussions in the game, so
-        # that we can resume at the right place when/if the player
-        # character dies on the level.
-        if deleted:
-            self.game.increment_deleted_dialogs(self.level.name, 
-                                                deleted)
+        # increment global time spent in dialog
+        self.game.dialog_dts[self.level.name] += dt
 
-
-        self.discussions = new_discussions
-
-        cur_disc = []
-        for  d in self.discussions:
-            if self.tpassed > d[1]:
-                cur_disc.append(d)
+        cur_disc = self.get_current_discussions()
         
         # have the active discussions changed ?
         if cur_disc != self.active_disc:
