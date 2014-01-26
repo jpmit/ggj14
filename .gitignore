@@ -2,3 +2,5 @@
 *.pyc
 discard/
 oldsounds/
+create-upload.py
+*.zip
