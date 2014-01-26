@@ -48,6 +48,20 @@ Your aim in each level is to reach the portal (the glowing orange
 circular object).  You'll need to avoid landing on the spikes though,
 and this will require clever use of jumping and switching.
 
+CONTROLLER:
+----------
+
+The game can be played with a USB gamepad, but unfortunately due to
+time constraints I had to 'hard code' this in, hence the in-game
+tutorial features keyboard controls only.
+
+The controller I used is an inexpensive SNES like controller made by
+'totalconsole' (purchased from Amazon).  So if you use one like this,
+the game should work (A button for jump, shoulder buttons for switch).
+It may well work with other controllers without modification, I have
+no idea.  In any case it should be simple enough to make the
+modifications to control.py for your gamepad.
+
 LICENSE:
 -------
 
