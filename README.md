@@ -20,57 +20,42 @@ Othewise open a terminal / console and "cd" to the game directory and type:
 
     $ python game.py
 
-ABOUT THE THEME:
+THE THEME:
 ---------------
 
-The theme of GGJ 2014 was '     '.
+The theme of GGJ 2014 was 'We don't see things as they are, we see
+them as we are'.
 
 My take on the theme is provided by the 'switch' mechanism in the
-game: we never quite see things how they are, we see them as 'we are'
-(i.e. from our standpoint, or quite literally the block the player is
-standing on in the level).
+game: we never quite see things how they are--since there are always
+two 'levels'---we see them as 'we are' (only one level, the one we are
+currently on).
 
-I've also incorporated the following 'diversifiers':
-- Player character
-- 
+I've also tried to incorporate the following 'diversifiers':
+- 'You Only Live Thrice'
+- 'I am who I want to be'
 
 HOW TO PLAY THE GAME:
 --------------------
 
-[There is an in game tutorial so ideally there is no need to read this
-section]
+[There is an in game tutorial so in the first instance there is no
+need to read this section]
 
-Use the left and right arrow keys to move the character.  Press spacebar
-to jump.  Press the 'x' key to 'switch' the level.
+Use the left and right arrow keys to move the character.  Press
+spacebar to jump.  Press the 'x' key to 'switch' the level.
 
 Your aim in each level is to reach the portal (the glowing orange
 circular object).  You'll need to avoid landing on the spikes though,
-and this will require clever use
+and this will require clever use of jumping and switching.
 
 LICENSE:
 -------
 
-'Two Levels' (code and art) is under the zlib license 
-(except for parts listed in "ARTISTIC CREDITS"):
-
-  This software is provided 'as-is', without any express or implied
-  warranty.  In no event will the authors be held liable for any
-  damages arising from the use of this software.
-
-  Permission is granted to anyone to use this software for any
-  purpose, including commercial applications, and to alter it and
-  redistribute it freely, subject to the following restrictions:
-
-  1. The origin of this software must not be misrepresented; you must
-     not claim that you wrote the original software. If you use this
-     software in a product, an acknowledgment in the product
-     documentation would be appreciated but is not required.
-
-  2. Altered source versions must be plainly marked as such, and must
-     not be misrepresented as being the original software.
-
-  3. This notice may not be removed or altered from any source
-     distribution.
+In accordance with the GGJ rules, 'Two Levels' (code and art) is
+provided here under the Attribution-Noncommercial-Share Alike 3.0
+version of the Creative Commons Licensez (except for parts listed in
+"ARTISTIC CREDITS").  See the GGJ website globalgamejam.org for more
+information.
 
 ARTISTIC CREDITS:
 ----------------
