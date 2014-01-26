@@ -9,7 +9,8 @@ LEVEL_NAMES = {'1': 'nowhere to go',
                '8': 'the tunnel',
                '9': 'sparsity',
                '10': 'hi lo',
-               '13': 'hi lo'
+               '11': 'halfpipe',
+               '12': 'finale',
                }
 LEVEL_NUMS = LEVEL_NAMES.keys()
 LEVEL_NUMS.sort()
