@@ -99,10 +99,7 @@ class Game(object):
     def mainloop(self):
         
         # first scene of the game
-#        ascene = GameCompleteScene(self)
-
-        ascene = PlayScene('12', self)
-#        ascene = TitleScene(self)
+        ascene = TitleScene(self)
 
         # initialize clock
         dt = self.clock.tick(FPS) / 1000.0
@@ -116,7 +113,7 @@ class Game(object):
             
             # get the events we are interested in as well as the
             # currently pressed keys, and whether we want to quit.
-            events, pressed, quitevent = get_events(pressed)
+            events, pressed, quitevent, menuevent = get_events(pressed)
 
             # scene specific updating based on events.
             ascene.process_input(events, pressed, dt)
@@ -136,6 +133,9 @@ class Game(object):
             # delay for correct time here.
             dt = self.clock.tick(FPS) / 1000.0
 
+            if menuevent:
+                ascene = TitleScene(self)
+                
             if quitevent:
                 ascene = None
                 pygame.quit()

@@ -101,7 +101,7 @@ class LevelTutorial(Scene):
         return cur_disc
 
     def update(self, dt):
-        print self.active_disc
+
         self.tpassed += dt
 
         # increment global time spent in dialog

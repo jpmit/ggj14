@@ -31,11 +31,14 @@ def get_events(pressed):
     # will want to edit this later so we can configure a joystick.
     events = []
     quitevent = False
+    menuevent = False
     for event in  pygame.event.get():
         if (event.type == pygame.KEYDOWN) or (event.type == pygame.KEYUP):
             down = (event.type == pygame.KEYDOWN)
             if (event.key == pygame.K_ESCAPE):
-                events.append(MyEvent(ESCAPE, down))
+                if down:
+                    # back to main menu
+                    menuevent = True
                 pressed[ESCAPE] = down
             if (event.key == pygame.K_SPACE):
                 events.append(MyEvent(JUMP, down))
@@ -94,4 +97,6 @@ def get_events(pressed):
         elif event.type == pygame.QUIT:
             quitevent = True
 
-    return events, pressed, quitevent
+
+    return events, pressed, quitevent, menuevent
+
