@@ -10,3 +10,8 @@ BLACK = (0,   0,   0)
 # each block is assumed to be square
 BLOCK_SIZE = 50
 
+# top left corner of dialog
+TEXT_POS = (580, 150)
+
+# where to blit the level name
+NAME_POS = (400, 30)

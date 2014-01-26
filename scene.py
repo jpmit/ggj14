@@ -211,7 +211,7 @@ class PlayScene(Scene):
             screen.blit(self.player.image, RelRect(self.player, self.camera))
 
         # name of the level
-        screen.blit(self.nametxt, (400, 50))
+        screen.blit(self.nametxt, NAME_POS)
 
         # render special stuff (e.g. tutorial)
         for spec in self.special_stuff:
